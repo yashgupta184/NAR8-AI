@@ -508,20 +508,6 @@ def main():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        # Tech stack display
-        st.markdown("### 🛠️ Technology Stack")
-        tech_cols = st.columns(5)
-        techs = [
-            ("🐍", "Python 3.13"),
-            ("📊", "Power BI API"),
-            ("🔬", "NumPy + SciPy"),
-            ("🤖", "Gemini / OpenAI"),
-            ("📑", "python-pptx"),
-        ]
-        for col, (icon, name) in zip(tech_cols, techs):
-            with col:
-                st.markdown(f"**{icon} {name}**")
-
         st.markdown("<hr>", unsafe_allow_html=True)
         st.markdown(
             "<center><i>Click 'Run Weekly Analysis' above to start the pipeline.</i></center>",
