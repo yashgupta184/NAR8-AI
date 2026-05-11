@@ -19,6 +19,7 @@ Pipeline stages:
 import argparse
 import time
 import os
+import pandas as pd
 from config.settings import Config
 from data.powerbi_connector import PowerBIConnector
 from engine.anomaly_detector import AnomalyDetector
@@ -33,6 +34,7 @@ def run_pipeline(
     pct_threshold: float = None,
     lookback_weeks: int = None,
     verbose: bool = True,
+    custom_df: pd.DataFrame = None,
 ) -> dict:
     """
     Executes the full NAR8 AI pipeline.
@@ -87,8 +89,12 @@ def run_pipeline(
 
         # -- Stage 1: Fetch Data ---------------------------------------
         log("\n[1/4] Fetching sales data...")
-        connector = PowerBIConnector()
-        df = connector.fetch_weekly_sales(weeks=weeks or Config.WEEKS_OF_DATA)
+        if custom_df is not None:
+            df = custom_df
+            log("      [SUCCESS] Using custom uploaded dataset.")
+        else:
+            connector = PowerBIConnector()
+            df = connector.fetch_weekly_sales(weeks=weeks or Config.WEEKS_OF_DATA)
         result["df"] = df
         log(f"      [SUCCESS] {len(df)} rows | {df['week_start_date'].nunique()} weeks")
         log(f"        Categories: {', '.join(df['category'].unique())}")
